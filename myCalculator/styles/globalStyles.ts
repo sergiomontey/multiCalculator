@@ -11,15 +11,17 @@ import { StyleSheet } from 'react-native';
 import { spacing } from './theme';
 
 export default StyleSheet.create({
-  screen: {
-    flex: 1,
-    padding: spacing.lg,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: spacing.sm,
-  },
+    screen: {
+      flex: 1,
+      paddingTop: spacing.xl,        // add top space
+      paddingBottom: spacing.lg,     // add bottom space
+      paddingHorizontal: spacing.md, // left/right padding
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: spacing.sm,
+    },
 });
 /**
  * This file contains global styles that can be reused across different components and screens.
