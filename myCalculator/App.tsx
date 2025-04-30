@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+/**
+ * File: App.tsx
+ * Author: Sergio Montecinos
+ * Date: April 30, 2025
+ * Description: Entry point of the myCalculator app. 
+ * It wraps the main screen in a ThemeProvider to manage global light/dark mode state.
+ * Design Principles: Uses Composition over Inheritance, Single Responsibility Principle.
+ */
+
+import React from 'react';
+import { ThemeProvider } from './context/ThemeContext';
+import HomeScreen from './screens/HomeScreen';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <HomeScreen />
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
