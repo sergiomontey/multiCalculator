@@ -3,30 +3,27 @@
  * Author: Sergio Montecinos
  * Date: April 30, 2025
  * Description:
- *   Styles for calculator buttons. Buttons are fixed size with tighter spacing and rounder appearance.
- *   Includes a distinct "Clear History" button style for emphasis.
+ *   Styles for calculator buttons with tighter column spacing and centered layout.
+ *   Supports iOS-style circular buttons and a rectangular "Clear History" button.
  * Design Principles:
- *   - Consistent Grid Layout
- *   - Responsive Spacing
- *   - DRY and Modular Styling
+ *   - Tight Grid Spacing
+ *   - Visual Consistency
+ *   - Modular Styling
  */
 
 import { StyleSheet } from 'react-native';
 import { fontSizes, spacing } from './theme';
 
-const buttonSize = 65; // consistent size for all buttons
-const buttonSpacing = 1; // tighter spacing between buttons
-const buttonBorderRadius = 20; // rounder buttons
-const buttonFontSize = fontSizes.lg; // larger font size for better readability
-const buttonFontWeight = 'bold'; // bold text for emphasis
+const buttonSize = 65;
+const buttonBorderRadius = buttonSize / 2;
 
-const marginPercentage = 0.02; // 2% margin
 export default StyleSheet.create({
   button: {
     width: buttonSize,
     height: buttonSize,
-    margin: buttonSize * marginPercentage,                  // tighter spacing
-    borderRadius:buttonSize / 2,            // rounder buttons
+    marginHorizontal: 2,       // tightened column spacing
+    marginVertical: 4,         // optional tighter row spacing
+    borderRadius: buttonBorderRadius,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -34,28 +31,35 @@ export default StyleSheet.create({
     fontSize: fontSizes.lg,
     fontWeight: 'bold',
   },
+  dark: {
+    backgroundColor: '#505050',
+  },
+  light: {
+    backgroundColor: '#D4D4D2',
+  },
+  accent: {
+    backgroundColor: '#FF9500',
+  },
   clearButton: {
-    width: '90%',
-    height: 50,
+    width: 200,
+    height: 45,
     backgroundColor: '#EF4444',
-    borderRadius: 12,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: spacing.md,
-    marginBottom: spacing.xl,
+    marginBottom: spacing.lg,
   },
   clearText: {
     color: '#fff',
     fontSize: fontSizes.md,
     fontWeight: 'bold',
   },
+  utility: {
+    backgroundColor: '#6B728E', // slate gray-blue
+  },
+    utilityText: {
+        color: '#fff',
+    },  
 });
-/**
- * This file contains styles specifically for the calculator buttons.
- * The button styles are designed to be consistent and modular, ensuring a uniform look and feel across the application.
- * The styles are defined using React Native's StyleSheet API for better performance.
- * 
- * The buttons have a fixed size with tighter spacing and a rounder appearance for a modern look.
- * A distinct "Clear History" button style is provided for emphasis, making it easily identifiable to users.
- */

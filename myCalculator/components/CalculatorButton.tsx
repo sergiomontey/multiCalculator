@@ -3,14 +3,15 @@
  * Author: Sergio Montecinos
  * Date: April 30, 2025
  * Description:
- *   A reusable calculator button that supports both standard and clear-button styling,
- *   dynamically themed for dark and light modes.
+ *   A hybrid calculator button component that supports dynamic theming (light/dark)
+ *   and fixed iOS-style types ('dark', 'light', 'accent', 'clear', 'default').
+ *   This balances aesthetic consistency with dynamic adaptability.
  * Design Pattern:
+ *   - Strategy Pattern via `type` mapping
  *   - Presentational Component Pattern
- *   - Strategy Pattern via conditional props
- * Principles Applied:
- *   - Separation of Concerns
+ * Principles:
  *   - Open/Closed Principle
+ *   - Separation of Concerns
  *   - DRY (Don't Repeat Yourself)
  */
 
@@ -20,29 +21,42 @@ import styles from '../styles/buttonStyles';
 import { colors } from '../styles/theme';
 import { useTheme } from '../context/ThemeContext';
 
+// Supported button types
+type ButtonType = 'default' | 'clear' | 'dark' | 'light' | 'accent' | 'utility';
+
 interface Props {
   label: string;
   onPress: () => void;
-  type?: 'clear' | 'default';
+  type?: ButtonType;
 }
 
 export default function CalculatorButton({ label, onPress, type = 'default' }: Props) {
   const { isDark } = useTheme();
   const themeColors = isDark ? colors.dark : colors.light;
 
-  const isClear = type === 'clear';
+  // Style mapping strategy
+  const styleMap: Record<ButtonType, any> = {
+    default: [styles.button, { backgroundColor: themeColors.primary }],
+    clear: [styles.clearButton],
+    dark: [styles.button, styles.dark],
+    light: [styles.button, styles.light],
+    accent: [styles.button, styles.accent],
+    utility: [styles.button, styles.utility],
+  // Add more styles as needed
+  };
 
-  const buttonStyle = isClear
-    ? [styles.clearButton]
-    : [styles.button, { backgroundColor: themeColors.primary }];
-
-  const textStyle = isClear
-    ? styles.clearText
-    : [styles.text, { color: themeColors.text }];
+  const textStyleMap: Record<ButtonType, any> = {
+    default: [styles.text, { color: themeColors.text }],
+    clear: styles.clearText,
+    dark: styles.text,
+    light: styles.text,
+    accent: styles.text,
+    utility: styles.text, // ✅ reuse default text style
+  };
 
   return (
-    <TouchableOpacity style={buttonStyle} onPress={onPress}>
-      <Text style={textStyle}>{label}</Text>
+    <TouchableOpacity style={styleMap[type]} onPress={onPress}>
+      <Text style={textStyleMap[type]}>{label}</Text>
     </TouchableOpacity>
   );
 }
