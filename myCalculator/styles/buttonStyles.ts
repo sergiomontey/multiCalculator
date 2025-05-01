@@ -14,12 +14,19 @@
 import { StyleSheet } from 'react-native';
 import { fontSizes, spacing } from './theme';
 
+const buttonSize = 65; // consistent size for all buttons
+const buttonSpacing = 1; // tighter spacing between buttons
+const buttonBorderRadius = 20; // rounder buttons
+const buttonFontSize = fontSizes.lg; // larger font size for better readability
+const buttonFontWeight = 'bold'; // bold text for emphasis
+
+const marginPercentage = 0.02; // 2% margin
 export default StyleSheet.create({
   button: {
-    width: 65,
-    height: 65,
-    margin: 4,                    // tighter spacing
-    borderRadius: 20,            // rounder buttons
+    width: buttonSize,
+    height: buttonSize,
+    margin: buttonSize * marginPercentage,                  // tighter spacing
+    borderRadius:buttonSize / 2,            // rounder buttons
     alignItems: 'center',
     justifyContent: 'center',
   },

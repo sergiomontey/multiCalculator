@@ -54,7 +54,7 @@ export default function HomeScreen() {
   };
 
   const buttonRows = [
-    ['M+', 'MR', 'MC', '%'],
+    ['M+','MR', 'MC', '%'],
     ['√', 'x²', '+/-', '/'],
     ['7', '8', '9', '*'],
     ['4', '5', '6', '-'],
