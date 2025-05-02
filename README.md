@@ -12,7 +12,7 @@ This is a fully functional calculator built with **React**, **TypeScript**, and 
 **Design Principles Used**
 
 * **Single Responsibility Principle (SRP):** Each component focuses on one task (UI, logic, or state).
-* **DRY** (Don't Repeat Yourself):** Reusable styles, functions, and component logic.
+* **DRY (Don't Repeat Yourself):** Reusable styles, functions, and component logic.
 * **Open/Closed Principle:** New button types can be added without changing existing code.
 * **Separation of Concerns:** UI, styling, and logic are split across different files.
 * **Defensive Programming:** Handles malformed input, empty expressions, and runtime errors gracefully.
