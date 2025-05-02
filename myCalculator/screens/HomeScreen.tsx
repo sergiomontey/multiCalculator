@@ -44,14 +44,26 @@ export default function HomeScreen() {
     if (value === 'AC') {
       setDisplay('');
     } else if (value === '=') {
+      if (!display.trim()) return;
+
       try {
-        const result = eval(
-          display
-            .replace(/√/g, 'Math.sqrt')
-            .replace(/\^/g, '**')
-            .replace(/÷/g, '/')
-            .replace(/×/g, '*')
-        );
+        const normalized = display
+          .replace(/√/g, 'Math.sqrt')
+          .replace(/\^/g, '**')
+          .replace(/÷/g, '/')
+          .replace(/×/g, '*')
+          .replace(/(\d)\(/g, '$1*(')               // 2(3) → 2*(3)
+          .replace(/\)(\d)/g, ')*$1')               // (2)3 → (2)*3
+          .replace(/\)(\()/g, ')*(')                // (2)(3) → (2)*(3)
+          .replace(/(\d)Math\.sqrt/g, '$1*Math.sqrt'); // 2√9 → 2*Math.sqrt(9)
+
+        const result = eval(normalized);
+
+        if (typeof result === 'function') {
+          setDisplay('Error');
+          return;
+        }
+
         const entry = `${display} = ${result}`;
         setHistory(prev => [...prev, entry]);
         setDisplay(result.toString());
@@ -69,19 +81,18 @@ export default function HomeScreen() {
       setDisplay(prev => {
         const match = prev.match(/(-?\d+\.?\d*)$/); // match last number
         if (!match) return prev;
-  
+
         const number = match[1];
         const toggled = number.startsWith('-')
           ? number.slice(1)
           : `-${number}`;
-  
+
         return prev.slice(0, prev.length - number.length) + toggled;
       });
     } else {
       setDisplay(prev => prev + value);
     }
   };
-  
 
   const handleClearHistory = () => setHistory([]);
 
@@ -197,3 +208,7 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+// Note: The eval function is used here for simplicity. In a production app, consider using a safer alternative for expression evaluation.
+// Note: The calculator supports basic operations, square root, power, and parentheses.
+// Note: The calculator history is stored in memory and can be cleared.
+// Note: The calculator supports a dark mode toggle.
