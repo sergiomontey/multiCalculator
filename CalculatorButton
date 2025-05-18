@@ -1,0 +1,101 @@
+/**
+ * File: CalculatorButton.tsx
+ * Author: Sergio Montecinos
+ * Date: April 30, 2025
+ * Description:
+ *   A hybrid calculator button component that supports dynamic theming (light/dark)
+ *   and fixed iOS-style types ('dark', 'light', 'accent', 'clear', 'default').
+ *   This balances aesthetic consistency with dynamic adaptability.
+ * 
+ * Design Pattern:
+ *   - Strategy Pattern via `type` mapping
+ *   - Presentational Component Pattern
+ * 
+ * Principles:
+ *   - Open/Closed Principle: Easily extend styling for new types without changing core logic
+ *   - Separation of Concerns: Handles only visual rendering, not behavior
+ *   - DRY (Don't Repeat Yourself): Style logic is centralized using reusable maps
+ */
+
+import React from 'react';
+import { Text, TouchableOpacity } from 'react-native';
+
+// Importing shared button styles
+import styles from '../styles/buttonStyles';
+
+// Theme color values for light/dark mode
+import { colors } from '../styles/theme';
+
+// Theme context hook to dynamically detect if dark mode is active
+import { useTheme } from '../context/ThemeContext';
+
+/**
+ * Supported types of calculator buttons. These map to style classes
+ * and determine visual appearance (e.g., operator, number, special function).
+ */
+type ButtonType = 'default' | 'clear' | 'dark' | 'light' | 'accent' | 'utility';
+
+/**
+ * Props for CalculatorButton:
+ * - label: Text or symbol to display (e.g., "7", "+", "√")
+ * - onPress: Function to call when button is pressed
+ * - type: Visual style classification (default is 'default')
+ */
+interface Props {
+  label: string;
+  onPress: () => void;
+  type?: ButtonType;
+}
+
+/**
+ * CalculatorButton is a presentational component.
+ * It renders a styled button using props and adapts to the current theme.
+ */
+export default function CalculatorButton({ label, onPress, type = 'default' }: Props) {
+  // Access the current theme from global context (light or dark)
+  const { isDark } = useTheme();
+
+  // Based on theme, choose the correct color palette (light or dark)
+  const themeColors = isDark ? colors.dark : colors.light;
+
+  /**
+   * Mapping of button types to their visual styles.
+   * Uses the Strategy Pattern to assign style based on the `type` prop.
+   * 
+   * This allows easy addition of new button types by just extending the map
+   * without touching the rendering logic (Open/Closed Principle).
+   */
+  const styleMap: Record<ButtonType, any> = {
+    default: [styles.button, { backgroundColor: themeColors.primary }], // fallback
+    clear: [styles.clearButton],              // Special styling for 'Clear' button
+    dark: [styles.button, styles.dark],       // Number buttons in dark mode
+    light: [styles.button, styles.light],     // Utility buttons like "AC", "+/-"
+    accent: [styles.button, styles.accent],   // Operator buttons (+, -, =)
+    utility: [styles.button, styles.utility], // Math utility (√, ^, Ans)
+  };
+
+  /**
+   * Mapping of button types to their text styles.
+   * Like styleMap, this is extendable and avoids inline conditions (DRY).
+   */
+  const textStyleMap: Record<ButtonType, any> = {
+    default: [styles.text, { color: themeColors.text }],
+    clear: styles.clearText,
+    dark: styles.text,
+    light: styles.text,
+    accent: styles.text,
+    utility: styles.text, // Shares same style for now, but could be extended
+  };
+
+  /**
+   * Render the button with appropriate container and text styles.
+   * TouchableOpacity gives us press feedback (ripple, highlight, etc.).
+   */
+  return (
+    <TouchableOpacity style={styleMap[type]} onPress={onPress}>
+      <Text style={textStyleMap[type]}>
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+}
