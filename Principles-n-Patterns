@@ -1,0 +1,51 @@
+Design Principles and Patterns Used in the Calculator App
+ 
+Design Principles
+1. Single Responsibility Principle (SRP)
+Definition: Each module or component should have one reason to change.
+Usage:
+•	CalculatorButton.tsx only handles UI rendering.
+•	HomeScreen.tsx manages state and layout logic.
+•	ThemeContext.tsx controls theme state only.
+ 
+2. DRY (Don’t Repeat Yourself)
+Definition: Avoid duplicating logic or styles by reusing code.
+Usage:
+•	Centralized logic in handlePress() to process all button actions.
+•	Shared styles in buttonStyles.ts, globalStyles.ts, and theme.ts.
+ 
+3. Open/Closed Principle
+Definition: Software components should be open for extension but closed for modification.
+Usage:
+•	CalculatorButton supports new button types (e.g., 'utility') without modifying core logic.
+•	Strategy-style mappings in styleMap and textStyleMap allow new designs by adding types.
+ 
+4. Separation of Concerns
+Definition: Divide responsibilities into distinct sections of code.
+Usage:
+•	Display, logic, and layout are split across files: HomeScreen, ThemeContext, and styles/.
+•	Button behavior is distinct from visual style and app state.
+ 
+5. Defensive Programming
+Definition: Writing code that anticipates and handles possible errors or misuse.
+Usage:
+•	Guard clauses for empty input before eval().
+•	Symbol normalization to ensure expressions like 2(3) work.
+•	Catch blocks to handle runtime errors safely.
+
+Design Patterns
+1. Presentational Component Pattern
+Definition: A UI component that renders based on props and does not contain logic.
+Usage:
+•	CalculatorButton.tsx renders styled buttons based on label and type.
+ 
+2. Container Component Pattern
+Definition: A component that manages logic and state, passing data to presentational components.
+Usage:
+•	HomeScreen.tsx handles all display, state, history, and passes props to CalculatorButton.
+ 
+3. Strategy Pattern (via Props)
+Definition: Dynamically selects behavior (or styling) based on configuration.
+Usage:
+•	CalculatorButton uses type prop to determine style via styleMap, allowing styling logic to scale easily.
+
