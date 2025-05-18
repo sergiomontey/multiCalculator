@@ -1,0 +1,59 @@
+/**
+ * File: CalculatorButton.tsx
+ * Author: Sergio Montecinos
+ * Date: May 4, 2025
+ * Description:
+ *   A reusable calculator button component that supports themed styling and flexible button types.
+ *   Button appearance is dynamically determined by a style strategy pattern based on the `type` prop.
+ * Design Pattern:
+ *   - Presentational Component Pattern
+ *   - Strategy Pattern (style selection based on type)
+ * Principles:
+ *   - DRY
+ *   - Separation of Concerns
+ *   - Open/Closed Principle
+ */
+
+import React from 'react';
+import { Text, TouchableOpacity } from 'react-native';
+import styles from '../styles/buttonStyles';
+import { colors } from '../styles/theme';
+import { useTheme } from '../context/ThemeContext';
+import { ButtonType } from '../types/ButtonTypes'; // ✅ imported shared type
+
+interface Props {
+  label: string;
+  onPress: () => void;
+  type?: ButtonType;
+}
+
+export default function CalculatorButton({ label, onPress, type = 'default' }: Props) {
+  const { isDark } = useTheme();
+  const themeColors = isDark ? colors.dark : colors.light;
+
+  // Button style strategy map based on type
+  const styleMap: Record<ButtonType, any> = {
+    default: [styles.button, { backgroundColor: themeColors.primary }],
+    clear: [styles.clearButton],
+    dark: [styles.button, styles.dark],
+    light: [styles.button, styles.light],
+    accent: [styles.button, styles.accent],
+    utility: [styles.button, styles.utility],
+  };
+
+  // Corresponding text styles
+  const textStyleMap: Record<ButtonType, any> = {
+    default: [styles.text, { color: themeColors.text }],
+    clear: styles.clearText,
+    dark: styles.text,
+    light: styles.text,
+    accent: styles.text,
+    utility: styles.text,
+  };
+
+  return (
+    <TouchableOpacity style={styleMap[type]} onPress={onPress}>
+      <Text style={textStyleMap[type]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
