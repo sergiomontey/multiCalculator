@@ -1,0 +1,11 @@
+Place this file at:
+src/types/ButtonTypes.ts
+
+Update your files to import it like this:
+
+In CalculatorButton.tsx:
+import { ButtonType } from '../types/ButtonTypes';
+
+In HomeScreen.tsx:
+import { ButtonType, ButtonConfig } from '../types/ButtonTypes';
+
